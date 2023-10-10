@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructions</title>
+</head>
+<style>
+    body,
+    html {
+        height: 100%;
+        overflow-x: hidden;
+    }
+
+    html {
+        overflow-x: initial !important;
+    }
+
+    body {
+        background: linear-gradient(to bottom, #0033cc, #ff3300, #ff3300, #0033cc);
+        background-size: 100% 100%;
+        color: white;
+        font-size: 21px;
+        padding: 0px;
+        margin-bottom: 0;
+    }
+
+    #instructions {
+        margin-left: 70px;
+        margin-top: -200px;
+    }
+
+    #snowflakes1,
+    #snowflakes2,
+    #snowflakes3 {
+        position: relative;
+        left: 40px;
+        width: 460px;
+        height: 65px;
+    }
+
+    #flames1,
+    #flames2 {
+        position: relative;
+        top: 420px;
+        left: 40px;
+        margin-left: -10px;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: -150px;
+    }
+
+    button {
+        border: none;
+        padding: 5px 10px;
+        text-align: center;
+        font-size: 25px;
+        margin: 10px 5px;
+    }
+
+    .flames-class {
+        display: flex;
+        align-items: center;
+    }
+
+    .snowflakes-class {
+        display: inline-block;
+    }
+</style>
+<a href="index.html">
+    <button type="button" class="block"> Go back </button>
+</a>
+
+<body>
+    <div class="snowflakes-class">
+        <img src="snowflakes.png" alt="Snowflakes" id="snowflakes1">
+        <img src="snowflakes.png" alt="Snowflakes" id="snowflakes2">
+        <img src="snowflakes.png" alt="Snowflakes" id="snowflakes3">
+    </div>
+    <div class="flames-class">
+        <img src="flames.png" alt="Flames" id="flames1">
+        <img src="flames.png" alt="Flames" id="flames2">
+    </div>
+    <div id="instructions">
+        <h1> Welcome to Hot or Cold! </h1>
+        <p> Directions: </p>
+        <ol>
+            <li> Every time, you start with the number 50. </li>
+            <li> You have 5 chances to guess the number. </li>
+            <li> Unless you manage to get your number in the very hot range. In this case, no guesses are subtracted
+                while your number is "very hot". </li>
+            <li> On each turn, you will choose to add or subtract a certain amount from the number. </li>
+            <li> You cannot go above 100 or below 1. If you try, you will get an error message and no guesses will be
+                subtracted, nor your guess modified. </li>
+            <li> After you modify your guess, you will be told how hot or cold your guess is. This indicates how close
+                your guess is to the answer. </li>
+            <li> If you guess the number within 5 guesses, it will tell you that you won! </li>
+            <li> If you want to be told the answer, you can press the "commit" button. </li>
+            <li> If you want to play again, you can press the "reset" button. </li>
+            <li> Click "go back" when you are ready to start. </li>
+            <li> If you want to see these instructions again, you can press "show instructions". </li>
+        </ol>
+        <p> Have fun! </p>
+    </div>
+</body>
+
+</html>

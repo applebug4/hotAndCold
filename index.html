@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<!--Your name: Emma Katz
+    Class: Web Development
+    Teacher: Mr. Irimina
+    Date: September 18th, 2023
+    -->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Hot And Cold </title>
+</head>
+
+<style>
+    body,
+    html {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    body {
+        background: linear-gradient(to bottom, #0033cc, #ff3300, #ff3300, #0033cc);
+        background-size: cover;
+        color: white;
+        font-size: 30px;
+    }
+
+    #divGuess {
+        margin-left: 70px;
+        margin-top: 10px;
+    }
+
+    #snowflakes1,
+    #snowflakes2,
+    #snowflakes3 {
+        position: relative;
+        left: 40px;
+        width: 460px;
+        height: 65px;
+    }
+
+    #flames1,
+    #flames2 {
+        position: relative;
+        top: 200px;
+        left: 40px;
+        margin-left: -10px;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: -150px;
+    }
+
+    button {
+        border: none;
+        padding: 5px 10px;
+        text-align: center;
+        font-size: 25px;
+        margin: 10px 5px;
+    }
+
+    .flames-class {
+        display: flex;
+        align-items: center;
+    }
+
+    .snowflakes-class {
+        display: inline-block;
+    }
+</style>
+
+<body onload="initialize();">
+    <div class="snowflakes-class">
+        <img src="snowflakes.png" alt="Snowflakes" id="snowflakes1">
+        <img src="snowflakes.png" alt="Snowflakes" id="snowflakes2">
+        <img src="snowflakes.png" alt="Snowflakes" id="snowflakes3">
+    </div>
+    <div class="flames-class">
+        <img src="flames.png" alt="Flames" id="flames1">
+        <img src="flames.png" alt="Flames" id="flames2">
+    </div>
+    <div class="buttons">
+        <button id="add1" onclick="addOne();"> Add 1 </button>
+        <button id="add5" onclick="addFive();"> Add 5 </button>
+        <button id="add10" onclick="addTen();"> Add 10 </button>
+        <button id="add25" onclick="addTwentyFive();"> Add 25 </button>
+        <button id="subtract1" onclick="subtractOne();"> Subtract 1 </button>
+        <button id="subtract5" onclick="subtractFive();"> Subtract 5 </button>
+        <button id="subtract10" onclick="subtractTen();"> Subtract 10 </button>
+        <button id="subtract25" onclick="subtractTwentyFive();"> Subtract 25 </button>
+        <button id="commit" onclick="commit();"> Commit </button>
+        <button id="reset" onclick="initialize();"> Reset </button>
+        <a href="instructions.html">
+            <button type="button" class="block"> Instructions </button>
+        </a>
+    </div>
+    <div id=divGuess>
+        <div id="divLimit">
+
+        </div>
+        <div id="numberout">
+
+        </div>
+        <div id="divhotorcold">
+
+        </div>
+        <div id="divguess">
+            You have 5 guesses left.
+        </div>
+        <div id="answer">
+
+        </div>
+    </div>
+</body>
+
+
+<script>
+    var buttons = document.querySelectorAll("button");
+    var guessLog = [];
+    var proximityLog = [];
+    var gameCount = 0;
+
+    function initialize() {
+        guessLog = [];
+        proximityLog = [];
+        numberOutput = document.getElementById("numberout");
+        answer = Math.floor((Math.random() * 100) + 1);
+        guessesLeft = 5;
+        number = 50;
+        guessLog.push(number);
+        proximityLog.length = 0;
+        previousProximity = "";
+        reachedLimit = document.getElementById("divLimit");
+        reachedLimit.innerHTML = "";
+        display();
+        numberOutput.innerHTML = "Guesses: " + number;
+        testAnswer.innerHTML = "";
+        if (guessesLeft == 5) {
+            proximity.innerHTML = "Previous guesses: ";
+        }
+        buttons.forEach(function (button) {
+            button.disabled = false;
+        });
+    }
+
+    function disableButtons() {
+        buttons.forEach(function (button) {
+            if (button.id !== "reset") {
+                button.disabled = true;
+            }
+        });
+    }
+
+    function display() {
+
+        numberOutput.innerHTML = "Guesses: ";
+        if (guessesLeft != 5) {
+            numberOutput.innerHTML = "Guesses: ";
+        }
+
+        guesses = document.getElementById("divguess");
+        guesses.innerHTML = "You have " + guessesLeft + " guesses left.";
+        proximity = document.getElementById("divhotorcold");
+        testAnswer = document.getElementById("answer");
+
+        if (proximityLog.length > 0) {
+            proximity.innerHTML = "Previous guesses: ";
+            for (let i = 0; i < proximityLog.length - 1; i++) {
+                proximity.innerHTML += proximityLog[i] + ", ";
+            }
+            for (let i = 0; i < guessLog.length; i++) {
+                if (i === guessLog.length - 1) {
+                    numberOutput.innerHTML += '<span style="font-weight: bold; bold; font-size: 30px;">' + guessLog[i] + '</span>';
+                } else {
+                    numberOutput.innerHTML += guessLog[i];
+                }
+                if (i < guessLog.length - 1) {
+                    numberOutput.innerHTML += ', ';
+                }
+            }
+        }
+        if (proximityLog.length > 0) {
+            proximity.innerHTML += "<b>" + proximityLog[proximityLog.length - 1] + "</b>";
+        }
+    }
+
+    function guess() {
+        reachedLimit.innerHTML = "";
+        if (guessesLeft > 0) {
+            guessesLeft--;
+            guesses.innerHTML = ("You have " + guessesLeft + " guess" + (guessesLeft === 1 ? "" : "es") + " left.");
+        }
+        if (number == answer) {
+            testAnswer.innerHTML = "You won!";
+            disableButtons();
+        } else if (guessesLeft === 0) {
+            testAnswer.innerHTML = "The answer was: " + answer;
+            disableButtons();
+        }
+        testProximity();
+    }
+
+    function checkForVeryHot() {
+        if (Math.abs(answer - number) < 6) {
+            return true;
+        }
+    }
+
+    function checkIfWon() {
+        if (number == answer) {
+            guessesLeft = 0;
+            testAnswer.innerHTML = "You won!";
+            disableButtons();
+        }
+    }
+
+    function testProximity() {
+        if (Math.abs(answer - number) < 6) {
+            previousProximity = "very hot";
+        } else if (Math.abs(answer - number) < 9) {
+            previousProximity = "hot";
+        } else if (Math.abs(answer - number) < 16) {
+            previousProximity = "very warm";
+        } else if (Math.abs(answer - number) < 21) {
+            previousProximity = "warm";
+        } else if (Math.abs(answer - number) < 31) {
+            previousProximity = "cool";
+        } else if (Math.abs(answer - number) < 41) {
+            previousProximity = "very cool";
+        } else if (Math.abs(answer - number) < 56) {
+            previousProximity = "cold";
+        } else {
+            previousProximity = "very cold";
+        }
+        proximityLog.push(previousProximity);
+    }
+
+    function commit() {
+        testAnswer.innerHTML = "The answer was: " + answer;
+        while (guessesLeft > 0) {
+            guess();
+        }
+    }
+
+    function addOne() {
+        if (number < 100) {
+            number += 1;
+            checkIfWon();
+        } else {
+            reachedLimit.innerHTML = "You cannot go above 100!";
+            return;
+        }
+        reachedLimit.innerHTML = "";
+        guessLog.push(number);
+        if (!checkForVeryHot()) {
+            guess();
+        } else {
+            testProximity();
+            checkIfWon();
+        }
+        display();
+    }
+
+    function addFive() {
+        if (number < 96) {
+            number += 5;
+            checkIfWon();
+        } else {
+            reachedLimit.innerHTML = "You cannot go above 100!";
+            return;
+        }
+        reachedLimit.innerHTML = "";
+        guessLog.push(number);
+        if (!checkForVeryHot()) {
+            guess();
+        } else {
+            testProximity();
+            checkIfWon();
+        }
+        display();
+    }
+
+    function addTen() {
+        if (number < 91) {
+            number += 10;
+            checkIfWon();
+        } else {
+            reachedLimit.innerHTML = "You cannot go above 100!";
+            return;
+        }
+        reachedLimit.innerHTML = "";
+        guessLog.push(number);
+        if (!checkForVeryHot()) {
+            guess();
+        } else {
+            testProximity();
+            checkIfWon();
+        }
+        display();
+    }
+
+    function addTwentyFive() {
+        if (number < 76) {
+            number += 25;
+            checkIfWon();
+        } else {
+            reachedLimit.innerHTML = "You cannot go above 100!";
+            return;
+        }
+        reachedLimit.innerHTML = "";
+        guessLog.push(number);
+        if (!checkForVeryHot()) {
+            guess();
+        } else {
+            testProximity();
+            checkIfWon();
+        }
+        display();
+    }
+
+    function subtractOne() {
+        if (number > 1) {
+            number -= 1;
+            checkIfWon();
+        } else {
+            reachedLimit.innerHTML = "You cannot go below 1!";
+            return;
+        }
+        reachedLimit.innerHTML = "";
+        guessLog.push(number);
+        if (!checkForVeryHot()) {
+            guess();
+        } else {
+            testProximity();
+            checkIfWon();
+        }
+        display();
+    }
+
+    function subtractFive() {
+        if (number > 5) {
+            number -= 5;
+            checkIfWon();
+        } else {
+            reachedLimit.innerHTML = "You cannot go below 1!";
+            return;
+        }
+        reachedLimit.innerHTML = "";
+        guessLog.push(number);
+        if (!checkForVeryHot()) {
+            guess();
+        } else {
+            testProximity();
+            checkIfWon();
+        }
+        display();
+    }
+
+    function subtractTen() {
+        if (number > 10) {
+            number -= 10;
+            checkIfWon();
+        } else {
+            reachedLimit.innerHTML = "You cannot go below 1!";
+            return;
+        }
+        reachedLimit.innerHTML = "";
+        guessLog.push(number);
+        if (!checkForVeryHot()) {
+            guess();
+        } else {
+            testProximity();
+            checkIfWon();
+        }
+        display();
+    }
+
+    function subtractTwentyFive() {
+        if (number > 25) {
+            number -= 25;
+            checkIfWon();
+        } else {
+            reachedLimit.innerHTML = "You cannot go below 1!";
+            return;
+        }
+        reachedLimit.innerHTML = "";
+        guessLog.push(number);
+        if (!checkForVeryHot()) {
+            guess();
+        } else {
+            testProximity();
+            checkIfWon();
+        }
+        display();
+    }
+
+</script>
+
+</html>
